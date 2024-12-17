@@ -1,6 +1,7 @@
 # Better Wakatime
 
 BetterWakatime is a WIP (work-in-progress) complete re-implementation of the WakaTime for Visual Studio Code extension, with full compatibility with existing WakaTime servers.
+
 This extension is both lighter on performance compared to the original extension, and has less bloat.
 
 This extension also supports multiple servers, allowing you to send coding data to multiple wakatime servers.
