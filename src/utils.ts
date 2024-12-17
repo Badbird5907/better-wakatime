@@ -3,6 +3,7 @@ import { WakaState } from "./types";
 
 const DEBOUNCE_MINUTES = 2;
 let lastHeartbeatTime = -1;
+let lastStatusBarTime = -1;
 export const enoughTimeHasPassed = () => {
   const now = Date.now();
   const diff = now - lastHeartbeatTime;
@@ -11,6 +12,16 @@ export const enoughTimeHasPassed = () => {
 
 export const resetDebounce = () => {
   lastHeartbeatTime = Date.now();
+};
+
+export const enoughTimeHasPassedForStatusBar = () => {
+  const now = Date.now();
+  const diff = now - lastStatusBarTime;
+  return diff > DEBOUNCE_MINUTES * 60 * 1000;
+};
+
+export const resetStatusBarDebounce = () => {
+  lastStatusBarTime = Date.now();
 };
 
 export const getCategory = (doc: vscode.TextDocument, state: WakaState) => {

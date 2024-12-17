@@ -4,10 +4,11 @@ import { currentState, heartbeat } from './wakatime';
 import { logger } from './logger';
 
 let disposables: vscode.Disposable[] = [];
+export let statusBar: StatusBar;
 export function activate(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync(["better-wakatime.apiConfig"]);
 	
-	const statusBar = new StatusBar();
+	statusBar = new StatusBar();
 
 	const subs: vscode.Disposable[] = [];
 	const edited = () => heartbeat(true);
@@ -40,8 +41,12 @@ export function activate(context: vscode.ExtensionContext) {
 	}, subs);
 
 	disposables.push(...subs);
+
+	statusBar.setText("WakaTime: Initialized!");
+	statusBar.show();
 }
 
 export function deactivate() {
 	disposables.forEach((d) => d.dispose());
+	statusBar.bar().dispose();
 }

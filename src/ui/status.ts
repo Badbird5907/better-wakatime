@@ -19,4 +19,8 @@ export class StatusBar {
   hide() {
     this.statusBarItem.hide();
   }
+
+  bar() {
+    return this.statusBarItem;
+  }
 }

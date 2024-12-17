@@ -2,7 +2,8 @@ import * as vscode from "vscode";
 import { getApiConfigs } from "./config";
 import { logger } from "./logger";
 import { ApiConfig, Heartbeat, HeartbeatResponse, WakaState } from "./types";
-import { enoughTimeHasPassed, getCategory, getFileName, getProjectName, getProjectRootCount, isEqual, resetDebounce } from "./utils";
+import { enoughTimeHasPassed, enoughTimeHasPassedForStatusBar, getCategory, getFileName, getProjectName, getProjectRootCount, isEqual, resetDebounce, resetStatusBarDebounce } from "./utils";
+import { statusBar } from "./extension";
 
 const sendHeartbeatToServer = async (apiConfig: ApiConfig, heartbeat: Heartbeat, machineName?: string): 
 Promise<{ success: false; message: string } | { success: true, data: HeartbeatResponse }> => {
@@ -75,7 +76,9 @@ export const heartbeat = async (force?: boolean) => {
     plugin: agent,
   };
 
-  await sendHeartbeat(data);
+  await sendHeartbeat(data).then(async () => {
+    await updateStatusBar();
+  });
   lastState = currentState;
 };
 
@@ -94,5 +97,38 @@ export const sendHeartbeat = async (heartbeat: Heartbeat) => {
       });
     }
   );
+};
+
+
+export const updateStatusBar = async () => {
+  if (!enoughTimeHasPassedForStatusBar()) {
+    logger.debug(`Conditions not met to update status bar, skipping...`);
+    return;
+  }
+  resetStatusBarDebounce();
+  // use first server to get status, as in theory they all are the same
+  const apiConfigs = getApiConfigs();
+  const apiConfig = apiConfigs[0];
+  const url = `${apiConfig.apiUrl}/users/current/statusbar/today?api_key=${apiConfig.apiKey}`;
+  const resp = await fetch(url, {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': agent
+    }
+  });
+  if (!resp.ok) {
+    const message = await resp.text();
+    logger.error(`Failed to get status bar: ${message}`);
+    statusBar.setText("WakaTime: Failed to fetch");
+    return;
+  }
+  const json = await resp.json() as { data: { grand_total: { text: string }, categories: { text: string, name: string }[] | [] } };
+  let statusBarText = `WakaTime: ${json.data.grand_total.text}`;
+  if (json.data.categories.length > 1) {
+    statusBarText = json.data.categories.map((x) => x.text + ' ' + x.name).join(', ');
+  }
+  statusBar.setText(statusBarText);
+  statusBar.show();
 };
 
