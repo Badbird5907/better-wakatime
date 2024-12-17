@@ -1,7 +1,11 @@
 {
   "name": "better-wakatime",
   "displayName": "better-wakatime",
-  "description": "",
+  "description": "A better Wakatime extension for Visual Studio Code",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Badbird5907/better-wakatime"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.59.0"
@@ -14,12 +18,6 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "title": "Test",
-        "command": "better-wakatime.test"
-      }
-    ],
     "configuration": {
       "title": "Better Wakatime",
       "properties": {
@@ -52,13 +50,13 @@
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "vsce": "vsce package -o out.vsix --no-dependencies"
   },
   "devDependencies": {
-    "@types/lodash.isequal": "^4.5.8",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
-    "@types/vscode": "^1.96.0",
+    "@types/vscode": "^1.59.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "@vscode/test-cli": "^0.0.10",
@@ -68,8 +66,5 @@
     "npm-run-all": "^4.1.5",
     "typescript": "^5.7.2"
   },
-  "packageManager": "pnpm@9.12.0+sha512.4abf725084d7bcbafbd728bfc7bee61f2f791f977fd87542b3579dcb23504d170d46337945e4c66485cd12d588a0c0e570ed9c477e7ccdd8507cf05f3f92eaca",
-  "dependencies": {
-    "lodash.isequal": "^4.5.0"
-  }
+  "packageManager": "pnpm@9.12.0+sha512.4abf725084d7bcbafbd728bfc7bee61f2f791f977fd87542b3579dcb23504d170d46337945e4c66485cd12d588a0c0e570ed9c477e7ccdd8507cf05f3f92eaca"
 }

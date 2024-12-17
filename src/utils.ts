@@ -54,3 +54,7 @@ export const getFileName = (doc: vscode.TextDocument) => {
   }
   return doc.fileName;
 };
+
+export const isEqual = (a: unknown, b: unknown) => {
+  return JSON.stringify(a) === JSON.stringify(b);
+};

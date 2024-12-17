@@ -42,11 +42,6 @@ export function activate(context: vscode.ExtensionContext) {
 	}, subs);
 
 	disposables.push(...subs);
-	
-	const disposable = vscode.commands.registerCommand('better-wakatime.test', () => {
-		vscode.window.showInformationMessage('Hello, World!');
-	});
-	context.subscriptions.push(disposable);
 }
 
 export function deactivate() {

@@ -2,8 +2,7 @@ import * as vscode from "vscode";
 import { getApiConfigs } from "./config";
 import { logger } from "./logger";
 import { ApiConfig, Heartbeat, HeartbeatResponse, WakaState } from "./types";
-import { enoughTimeHasPassed, getCategory, getFileName, getProjectName, getProjectRootCount, resetDebounce } from "./utils";
-import isEqual from "lodash.isequal";
+import { enoughTimeHasPassed, getCategory, getFileName, getProjectName, getProjectRootCount, isEqual, resetDebounce } from "./utils";
 
 const sendHeartbeatToServer = async (apiConfig: ApiConfig, heartbeat: Heartbeat, machineName?: string): 
 Promise<{ success: false; message: string } | { success: true, data: HeartbeatResponse }> => {
