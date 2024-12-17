@@ -5,8 +5,6 @@ import { logger } from './logger';
 
 let disposables: vscode.Disposable[] = [];
 export function activate(context: vscode.ExtensionContext) {
-	console.log('better-wakatime is activated');
-	logger.info('better-wakatime is activated');
 	context.globalState.setKeysForSync(["better-wakatime.apiConfig"]);
 	
 	const statusBar = new StatusBar();
