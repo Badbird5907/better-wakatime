@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { getApiConfigs } from "./config";
 import { logger } from "./logger";
 import { ApiConfig, Heartbeat, HeartbeatResponse, WakaState } from "./types";
-import { enoughTimeHasPassed, enoughTimeHasPassedForStatusBar, getCategory, getFileName, getProjectName, getProjectRootCount, isEqual, resetDebounce, resetStatusBarDebounce } from "./utils";
+import { enoughTimeHasPassed, enoughTimeHasPassedForStatusBar, getCategory, getCurrentGitBranch, getFileName, getProjectName, getProjectRootCount, isEqual, resetDebounce, resetStatusBarDebounce } from "./utils";
 import { statusBar } from "./extension";
 
 const sendHeartbeatToServer = async (apiConfig: ApiConfig, heartbeat: Heartbeat, machineName?: string): 
@@ -74,6 +74,7 @@ export const heartbeat = async (force?: boolean) => {
     language: document.languageId,
     project_root_count: getProjectRootCount(document),
     plugin: agent,
+    branch: getCurrentGitBranch(document.uri) ?? undefined,
   };
 
   await sendHeartbeat(data).then(async () => {
